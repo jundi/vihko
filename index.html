@@ -11,15 +11,27 @@
     <header class="app-header">
       <div>
         <h1>Vihko</h1>
-        <p>Simple diary calendar</p>
+        <p id="appSubtitle">Simple diary calendar</p>
       </div>
       <div class="nav-buttons">
+        <button id="changeDiary" class="secondary hidden">Change diary</button>
         <button id="prevMonth">← Previous</button>
         <button id="nextMonth">Next →</button>
       </div>
     </header>
 
-    <section class="calendar-card">
+    <section id="diarySection" class="diary-card">
+      <div class="month-header">
+        <span>Select or create a diary</span>
+      </div>
+      <div class="diary-actions">
+        <input id="newDiaryName" type="text" placeholder="New diary name" />
+        <button id="createDiary">Create diary</button>
+      </div>
+      <div id="diariesContainer" class="diary-list"></div>
+    </section>
+
+    <section id="calendarSection" class="calendar-card hidden">
       <div class="month-header">
         <span id="monthLabel"></span>
       </div>

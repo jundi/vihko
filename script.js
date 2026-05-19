@@ -2,6 +2,12 @@ const monthLabel = document.getElementById('monthLabel');
 const calendarGrid = document.getElementById('calendarGrid');
 const prevMonthButton = document.getElementById('prevMonth');
 const nextMonthButton = document.getElementById('nextMonth');
+const changeDiaryButton = document.getElementById('changeDiary');
+const diarySection = document.getElementById('diarySection');
+const calendarSection = document.getElementById('calendarSection');
+const newDiaryNameInput = document.getElementById('newDiaryName');
+const createDiaryButton = document.getElementById('createDiary');
+const diariesContainer = document.getElementById('diariesContainer');
 const notePanel = document.getElementById('notePanel');
 const noteDateLabel = document.getElementById('noteDateLabel');
 const noteText = document.getElementById('noteText');
@@ -10,7 +16,7 @@ const deleteNoteButton = document.getElementById('deleteNote');
 const closeNoteButton = document.getElementById('closeNote');
 
 let notesByDate = new Map();
-
+let currentDiary = null;
 let activeDate = null;
 let currentMonth = new Date();
 currentMonth.setDate(1);
@@ -33,9 +39,13 @@ function ensureNoteForDate(date) {
 }
 
 async function syncStorage() {
+  if (!currentDiary) {
+    return;
+  }
+
   const data = Array.from(notesByDate.entries());
   try {
-    await fetch('/api/notes', {
+    await fetch(`/api/notes?diary=${encodeURIComponent(currentDiary)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
@@ -43,6 +53,101 @@ async function syncStorage() {
   } catch (err) {
     console.error('Failed to save notes:', err);
   }
+}
+
+function showDiarySelection() {
+  diarySection.classList.remove('hidden');
+  calendarSection.classList.add('hidden');
+  notePanel.classList.add('hidden');
+  changeDiaryButton.classList.add('hidden');
+  document.getElementById('appSubtitle').textContent = 'Simple diary calendar';
+}
+
+async function loadDiaries() {
+  try {
+    const response = await fetch('/api/diaries');
+    const diaries = await response.json();
+    renderDiaryList(diaries);
+  } catch (err) {
+    console.error('Failed to load diaries:', err);
+  }
+}
+
+function renderDiaryList(diaries) {
+  diariesContainer.innerHTML = '';
+
+  if (!diaries.length) {
+    const empty = document.createElement('div');
+    empty.className = 'diary-empty';
+    empty.textContent = 'No diaries yet. Create one to get started.';
+    diariesContainer.appendChild(empty);
+    return;
+  }
+
+  diaries.forEach((diary) => {
+    const item = document.createElement('div');
+    item.className = 'diary-item';
+
+    const label = document.createElement('span');
+    label.textContent = diary;
+
+    const openButton = document.createElement('button');
+    openButton.type = 'button';
+    openButton.textContent = 'Open';
+    openButton.addEventListener('click', () => openDiary(diary));
+
+    item.appendChild(label);
+    item.appendChild(openButton);
+    diariesContainer.appendChild(item);
+  });
+}
+
+async function createDiary() {
+  const name = newDiaryNameInput.value.trim();
+  if (!name) {
+    return;
+  }
+
+  try {
+    await fetch('/api/diaries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name })
+    });
+    newDiaryNameInput.value = '';
+    await loadDiaries();
+    openDiary(name);
+  } catch (err) {
+    console.error('Failed to create diary:', err);
+  }
+}
+
+async function loadNotes() {
+  if (!currentDiary) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/notes?diary=${encodeURIComponent(currentDiary)}`);
+    const data = await response.json();
+    notesByDate = new Map(data);
+  } catch (err) {
+    console.error('Failed to load notes:', err);
+    notesByDate = new Map();
+  }
+  renderCalendar();
+}
+
+function openDiary(name) {
+  currentDiary = name;
+  diarySection.classList.add('hidden');
+  calendarSection.classList.remove('hidden');
+  changeDiaryButton.classList.remove('hidden');
+  document.getElementById('appSubtitle').textContent = `Diary: ${name}`;
+  activeDate = null;
+  showingEditor = false;
+  hideEditor();
+  loadNotes();
 }
 
 function renderCalendar() {
@@ -155,19 +260,19 @@ function moveMonth(offset) {
 
 prevMonthButton.addEventListener('click', () => moveMonth(-1));
 nextMonthButton.addEventListener('click', () => moveMonth(1));
+changeDiaryButton.addEventListener('click', () => {
+  currentDiary = null;
+  showDiarySelection();
+  loadDiaries();
+});
+createDiaryButton.addEventListener('click', createDiary);
 saveNoteButton.addEventListener('click', saveNote);
 deleteNoteButton.addEventListener('click', deleteNote);
 closeNoteButton.addEventListener('click', () => hideEditor());
 
 async function initApp() {
-  try {
-    const response = await fetch('/api/notes');
-    const data = await response.json();
-    notesByDate = new Map(data);
-  } catch (err) {
-    console.error('Failed to load notes:', err);
-  }
-  renderCalendar();
+  showDiarySelection();
+  loadDiaries();
 }
 
 initApp();

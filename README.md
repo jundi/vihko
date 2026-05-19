@@ -13,6 +13,7 @@ npm start
 
 Open `http://localhost:3000` in a browser.
 
+- Create or choose a diary from the front page.
 - Shows a calendar for the current month.
 - Click a day to create an empty note and select that day.
 - Days with a note are highlighted in green.
@@ -20,7 +21,7 @@ Open `http://localhost:3000` in a browser.
 - Click the selected day again to open the note editor.
 - Use the previous/next buttons to navigate between months.
 
-Notes are saved on the server in `notes.json`.
+Notes are saved per diary on the server in `notes.json`.
 
 ## Production Deployment
 

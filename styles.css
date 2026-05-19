@@ -79,11 +79,47 @@ button.secondary {
   background: #f3f4f6;
 }
 
-.calendar-card, .note-panel {
+.calendar-card, .note-panel, .diary-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
   padding: 24px;
+}
+
+.diary-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.diary-actions input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font: inherit;
+}
+
+.diary-list {
+  display: grid;
+  gap: 10px;
+}
+
+.diary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+}
+
+.diary-item button {
+  padding: 8px 14px;
+}
+
+.diary-empty {
+  color: var(--muted);
 }
 
 .month-header {

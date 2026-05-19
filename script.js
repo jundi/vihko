@@ -52,6 +52,7 @@ function renderCalendar() {
   const firstDay = new Date(year, month, 1);
   const startDay = firstDay.getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayKey = formatDate(new Date());
 
   for (let i = 0; i < startDay; i += 1) {
     const placeholder = document.createElement('div');
@@ -64,11 +65,13 @@ function renderCalendar() {
     const dateKey = formatDate(dayDate);
     const hasNote = notesByDate.has(dateKey);
     const isSelected = activeDate === dateKey;
+    const isToday = dateKey === todayKey;
 
     const dayCell = document.createElement('button');
     dayCell.type = 'button';
     dayCell.className = 'day-cell';
     if (hasNote) dayCell.classList.add('note');
+    if (isToday) dayCell.classList.add('today');
     if (isSelected) dayCell.classList.add('selected');
 
     dayCell.dataset.date = dateKey;

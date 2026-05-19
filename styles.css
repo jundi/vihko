@@ -144,6 +144,24 @@ button.secondary {
   color: var(--primary-strong);
 }
 
+.day-cell.today {
+  background: #fef3c7;
+  border-color: #fbbf24;
+}
+
+.day-cell.today .day-label {
+  color: #92400e;
+}
+
+.day-cell.today.note {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.day-cell.today.note .day-label {
+  color: #92400e;
+}
+
 .day-cell.selected {
   border-color: #000000;
 }

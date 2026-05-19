@@ -1,0 +1,197 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --border: #d8d8d8;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --primary: #10b981;
+  --primary-strong: #047857;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  padding: 24px;
+}
+
+.app-shell {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 24px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.app-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  font: inherit;
+  transition: transform 0.12s ease, border-color 0.12s ease, background-color 0.12s ease;
+}
+
+button:hover {
+  background: #f4f4f4;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button.secondary {
+  border-color: transparent;
+  background: #f3f4f6;
+}
+
+.calendar-card, .note-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.month-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.month-header span {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.weekdays span {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.day-cell {
+  min-height: 76px;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.day-cell.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.day-cell:hover:not(.empty) {
+  background: #eef2ff;
+}
+
+.day-label {
+  font-weight: 700;
+}
+
+.day-cell.note {
+  background: #ecfdf5;
+}
+
+.day-cell.note .day-label {
+  color: var(--primary-strong);
+}
+
+.day-cell.selected {
+  border-color: #000000;
+}
+
+.note-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--primary);
+  margin-top: 8px;
+  justify-self: end;
+}
+
+.note-panel.hidden {
+  display: none;
+}
+
+.note-panel-header {
+  margin-bottom: 12px;
+}
+
+#noteText {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  font: inherit;
+  resize: vertical;
+  min-height: 180px;
+}
+
+.note-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 16px;
+  }
+
+  .app-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .calendar-card, .note-panel {
+    padding: 18px;
+  }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vihko Diary</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <h1>Vihko</h1>
+        <p>Simple diary calendar</p>
+      </div>
+      <div class="nav-buttons">
+        <button id="prevMonth">← Previous</button>
+        <button id="nextMonth">Next →</button>
+      </div>
+    </header>
+
+    <section class="calendar-card">
+      <div class="month-header">
+        <span id="monthLabel"></span>
+      </div>
+      <div class="weekdays">
+        <span>Sun</span>
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+        <span>Sat</span>
+      </div>
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </section>
+
+    <section id="notePanel" class="note-panel hidden">
+      <div class="note-panel-header">
+        <h2>Note for <span id="noteDateLabel"></span></h2>
+      </div>
+      <textarea id="noteText" rows="8" placeholder="Write your note..."></textarea>
+      <div class="note-actions">
+        <button id="saveNote">Save</button>
+        <button id="closeNote" class="secondary">Close</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

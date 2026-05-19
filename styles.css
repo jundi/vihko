@@ -199,6 +199,16 @@ button.secondary {
   gap: 12px;
 }
 
+button.danger {
+  border-color: #f87171;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+button.danger:hover {
+  background: #fecaca;
+}
+
 @media (max-width: 640px) {
   body {
     padding: 16px;

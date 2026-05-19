@@ -6,6 +6,7 @@ const notePanel = document.getElementById('notePanel');
 const noteDateLabel = document.getElementById('noteDateLabel');
 const noteText = document.getElementById('noteText');
 const saveNoteButton = document.getElementById('saveNote');
+const deleteNoteButton = document.getElementById('deleteNote');
 const closeNoteButton = document.getElementById('closeNote');
 
 let notesByDate = new Map();
@@ -135,6 +136,15 @@ function saveNote() {
   hideEditor();
 }
 
+function deleteNote() {
+  if (!activeDate) return;
+  notesByDate.delete(activeDate);
+  syncStorage();
+  activeDate = null;
+  renderCalendar();
+  hideEditor();
+}
+
 function moveMonth(offset) {
   currentMonth.setMonth(currentMonth.getMonth() + offset);
   activeDate = null;
@@ -146,6 +156,7 @@ function moveMonth(offset) {
 prevMonthButton.addEventListener('click', () => moveMonth(-1));
 nextMonthButton.addEventListener('click', () => moveMonth(1));
 saveNoteButton.addEventListener('click', saveNote);
+deleteNoteButton.addEventListener('click', deleteNote);
 closeNoteButton.addEventListener('click', () => hideEditor());
 
 async function initApp() {

@@ -8,8 +8,7 @@ const noteText = document.getElementById('noteText');
 const saveNoteButton = document.getElementById('saveNote');
 const closeNoteButton = document.getElementById('closeNote');
 
-const storageKey = 'vihko-diary-notes';
-const notesByDate = new Map(JSON.parse(localStorage.getItem(storageKey) || '[]'));
+let notesByDate = new Map();
 
 let activeDate = null;
 let currentMonth = new Date();
@@ -32,8 +31,17 @@ function ensureNoteForDate(date) {
   }
 }
 
-function syncStorage() {
-  localStorage.setItem(storageKey, JSON.stringify(Array.from(notesByDate.entries())));
+async function syncStorage() {
+  const data = Array.from(notesByDate.entries());
+  try {
+    await fetch('/api/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch (err) {
+    console.error('Failed to save notes:', err);
+  }
 }
 
 function renderCalendar() {
@@ -54,7 +62,7 @@ function renderCalendar() {
   for (let day = 1; day <= daysInMonth; day += 1) {
     const dayDate = new Date(year, month, day);
     const dateKey = formatDate(dayDate);
-    const hasNote = notesByDate.has(dateKey) && notesByDate.get(dateKey).trim().length > 0;
+    const hasNote = notesByDate.has(dateKey);
     const isSelected = activeDate === dateKey;
 
     const dayCell = document.createElement('button');
@@ -137,4 +145,15 @@ nextMonthButton.addEventListener('click', () => moveMonth(1));
 saveNoteButton.addEventListener('click', saveNote);
 closeNoteButton.addEventListener('click', () => hideEditor());
 
-renderCalendar();
+async function initApp() {
+  try {
+    const response = await fetch('/api/notes');
+    const data = await response.json();
+    notesByDate = new Map(data);
+  } catch (err) {
+    console.error('Failed to load notes:', err);
+  }
+  renderCalendar();
+}
+
+initApp();

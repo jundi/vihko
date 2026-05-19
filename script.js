@@ -156,7 +156,7 @@ function renderCalendar() {
   monthLabel.textContent = getMonthKey(currentMonth);
   calendarGrid.innerHTML = '';
   const firstDay = new Date(year, month, 1);
-  const startDay = firstDay.getDay();
+  const startDay = (firstDay.getDay() + 6) % 7; // Monday = 0, Sunday = 6
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const todayKey = formatDate(new Date());
 

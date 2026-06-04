@@ -33,6 +33,10 @@ body {
   gap: 24px;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .app-header {
   display: flex;
   align-items: center;

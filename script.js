@@ -34,6 +34,25 @@ function parseDateKey(dateKey) {
   return new Date(year, month - 1, day);
 }
 
+function getDiaryFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const diary = params.get('diary');
+  return diary ? diary.trim() : null;
+}
+
+function updateUrlForDiary(diary, usePush = false) {
+  const params = new URLSearchParams(window.location.search);
+  if (diary) {
+    params.set('diary', diary);
+  } else {
+    params.delete('diary');
+  }
+  const queryString = params.toString();
+  const newUrl = `${window.location.pathname}${queryString ? `?${queryString}` : ''}`;
+  const method = usePush ? 'pushState' : 'replaceState';
+  window.history[method]({}, '', newUrl);
+}
+
 function getMonthKey(date) {
   return date.toLocaleString('default', { month: 'long', year: 'numeric' });
 }
@@ -102,7 +121,7 @@ function renderDiaryList(diaries) {
     const openButton = document.createElement('button');
     openButton.type = 'button';
     openButton.textContent = 'Open';
-    openButton.addEventListener('click', () => openDiary(diary));
+    openButton.addEventListener('click', () => openDiary(diary, true));
 
     item.appendChild(label);
     item.appendChild(openButton);
@@ -124,7 +143,7 @@ async function createDiary() {
     });
     newDiaryNameInput.value = '';
     await loadDiaries();
-    openDiary(name);
+    openDiary(name, true);
   } catch (err) {
     console.error('Failed to create diary:', err);
   }
@@ -146,8 +165,9 @@ async function loadNotes() {
   renderCalendar();
 }
 
-function openDiary(name) {
+function openDiary(name, pushUrl = false) {
   currentDiary = name;
+  updateUrlForDiary(name, pushUrl);
   diarySection.classList.add('hidden');
   calendarSection.classList.remove('hidden');
   changeDiaryButton.classList.remove('hidden');
@@ -270,6 +290,7 @@ prevMonthButton.addEventListener('click', () => moveMonth(-1));
 nextMonthButton.addEventListener('click', () => moveMonth(1));
 changeDiaryButton.addEventListener('click', () => {
   currentDiary = null;
+  updateUrlForDiary(null);
   showDiarySelection();
   loadDiaries();
 });
@@ -279,8 +300,13 @@ deleteNoteButton.addEventListener('click', deleteNote);
 closeNoteButton.addEventListener('click', () => hideEditor());
 
 async function initApp() {
-  showDiarySelection();
-  loadDiaries();
+  const diary = getDiaryFromUrl();
+  if (diary) {
+    openDiary(diary);
+  } else {
+    showDiarySelection();
+    loadDiaries();
+  }
 }
 
 initApp();

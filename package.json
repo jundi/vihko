@@ -1,7 +1,7 @@
 {
   "name": "vihko",
   "version": "1.0.0",
-  "description": "Simple diary application",
+  "description": "Simple notebook application",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

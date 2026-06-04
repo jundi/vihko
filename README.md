@@ -1,6 +1,6 @@
 # vihko
 
-Very simple diary application.
+Very simple notebook application.
 
 ## Usage
 
@@ -13,7 +13,7 @@ npm start
 
 Open `http://localhost:3000` in a browser.
 
-- Create or choose a diary from the front page.
+- Create or choose a notebook from the front page.
 - Shows a calendar for the current month.
 - Click a day to create an empty note and select that day.
 - Days with a note are highlighted in green.
@@ -21,7 +21,7 @@ Open `http://localhost:3000` in a browser.
 - Click the selected day again to open the note editor.
 - Use the previous/next buttons to navigate between months.
 
-Notes are saved per diary on the server in `notes.json`.
+Notes are saved per notebook on the server in `notes.json`.
 
 ## Production Deployment
 
@@ -41,6 +41,6 @@ This app can be deployed as a simple Node.js site:
 
 ### Notes
 
-- `notes.json` stores all diary notes on the server.
+- `notes.json` stores all notes on the server.
 - Do not commit `node_modules`.
 - Ensure the app has permission to read/write `notes.json`.

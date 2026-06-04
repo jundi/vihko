@@ -87,7 +87,7 @@ function showDiarySelection() {
   calendarSection.classList.add('hidden');
   notePanel.classList.add('hidden');
   changeDiaryButton.classList.add('hidden');
-  document.getElementById('appSubtitle').textContent = 'Simple diary calendar';
+  document.getElementById('appSubtitle').textContent = 'Simple notebook';
 }
 
 async function loadDiaries() {
@@ -106,7 +106,7 @@ function renderDiaryList(diaries) {
   if (!diaries.length) {
     const empty = document.createElement('div');
     empty.className = 'diary-empty';
-    empty.textContent = 'No diaries yet. Create one to get started.';
+    empty.textContent = 'No vihkos yet. Create one to get started.';
     diariesContainer.appendChild(empty);
     return;
   }
@@ -171,7 +171,7 @@ function openDiary(name, pushUrl = false) {
   diarySection.classList.add('hidden');
   calendarSection.classList.remove('hidden');
   changeDiaryButton.classList.remove('hidden');
-  document.getElementById('appSubtitle').textContent = `Diary: ${name}`;
+  document.getElementById('appSubtitle').textContent = `Vihko: ${name}`;
   activeDate = null;
   showingEditor = false;
   hideEditor();

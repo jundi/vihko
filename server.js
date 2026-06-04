@@ -38,7 +38,7 @@ app.get('/api/diaries', (req, res) => {
 app.post('/api/diaries', (req, res) => {
   const name = String(req.body.name || '').trim();
   if (!name) {
-    return res.status(400).json({ error: 'Diary name is required' });
+    return res.status(400).json({ error: 'Vihko name is required' });
   }
 
   const data = loadData();

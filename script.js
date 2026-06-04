@@ -229,10 +229,22 @@ function renderCalendar() {
 
 function selectDay(date) {
   const dateKey = formatDate(date);
+  const hadNote = notesByDate.has(dateKey);
 
   if (activeDate !== dateKey) {
     activeDate = dateKey;
     ensureNoteForDate(date);
+
+    if (!hadNote) {
+      noteText.value = '';
+      noteDateLabel.textContent = parseDateKey(dateKey).toLocaleDateString(undefined, {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      showEditor();
+      renderCalendar();
+      return;
+    }
+
     showingEditor = false;
     renderCalendar();
     hideEditor();
